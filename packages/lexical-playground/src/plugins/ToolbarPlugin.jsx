@@ -477,7 +477,9 @@ function InsertTweetDialog({
   activeEditor: LexicalEditor,
   onClose: () => void,
 }): React$Node {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(
+    'https://twitter.com/lexicaljs/status/1516178656359591942',
+  );
 
   const onClick = () => {
     const tweetID = text.split('status/')?.[1]?.split('?')?.[0];
@@ -521,7 +523,9 @@ function InsertYouTubeDialog({
   activeEditor: LexicalEditor,
   onClose: () => void,
 }): React$Node {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(
+    'https://www.youtube.com/watch?v=zKUpf1Vx0vs',
+  );
 
   const onClick = () => {
     const videoID = parseYouTubeVideoID(text);
