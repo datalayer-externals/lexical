@@ -16,7 +16,13 @@ import useRichTextSetup from './shared/useRichTextSetup';
 export default function useLexicalRichText(
   editor: LexicalEditor,
   externalHistoryState?: HistoryState,
-  initialEditorState?: null | string | EditorState | (() => void),
+  initialEditorState?:
+    | null
+    | (() => void)
+    | $ReadOnly<{
+        editorState: EditorState,
+        ignoreSelection?: boolean,
+      }>,
 ): void {
   useRichTextSetup(editor, initialEditorState);
   useLexicalHistory(editor, externalHistoryState);

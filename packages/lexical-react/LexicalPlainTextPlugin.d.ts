@@ -7,7 +7,13 @@
  */
 
 import type {EditorState} from 'lexical';
-type InitialEditorStateType = null | string | EditorState | (() => void);
+type InitialEditorStateType =
+  | null
+  | (() => void)
+  | $ReadOnly<{
+      editorState: EditorState;
+      ignoreSelection?: boolean;
+    }>;
 export default function PlainTextPlugin(arg0: {
   contentEditable: JSX.Element | null;
   initialEditorState?: InitialEditorStateType;

@@ -43,18 +43,18 @@ import {
   REMOVE_TEXT_COMMAND,
 } from 'lexical';
 
-export type InitialEditorStateType = null | string | EditorState | (() => void);
+export type InitialEditorStateType =
+  | null
+  | (() => void)
+  | $ReadOnly<{
+      editorState: EditorState,
+      ignoreSelection?: boolean,
+    }>;
 
-// Convoluted logic to make this work with Flow. Order matters.
-const options = {tag: 'history-merge'};
-const setEditorOptions: {
-  tag?: string,
-} = options;
-const updateOptions: {
-  onUpdate?: () => void,
-  skipTransforms?: true,
-  tag?: string,
-} = options;
+const historyMergeTag: $ReadOnly<{tag: 'history-merge'}> = {
+  tag: 'history-merge',
+};
+const editorUpdateOptions = {...historyMergeTag};
 
 function onCopyForPlainText(
   event: ClipboardEvent,
@@ -100,7 +100,7 @@ function onCutForPlainText(event: ClipboardEvent, editor: LexicalEditor): void {
   });
 }
 
-function initializeEditor(
+export function initializeEditor(
   editor: LexicalEditor,
   initialEditorState?: InitialEditorStateType,
 ): void {
@@ -121,20 +121,28 @@ function initializeEditor(
           paragraph.select();
         }
       }
-    }, updateOptions);
+    }, editorUpdateOptions);
   } else if (initialEditorState !== null) {
     switch (typeof initialEditorState) {
-      case 'string': {
-        const parsedEditorState = editor.parseEditorState(initialEditorState);
-        editor.setEditorState(parsedEditorState, setEditorOptions);
-        break;
-      }
       case 'object': {
-        editor.setEditorState(initialEditorState, setEditorOptions);
+        if (typeof initialEditorState === 'string') {
+          const {editorState, ignoreSelection} = initialEditorState;
+          const parsedEditorState = editor.parseEditorState(editorState);
+          editor.setEditorState(parsedEditorState, {
+            ignoreSelection,
+            ...historyMergeTag,
+          });
+        } else {
+          const {editorState, ignoreSelection} = initialEditorState;
+          editor.setEditorState(editorState, {
+            ignoreSelection,
+            ...historyMergeTag,
+          });
+        }
         break;
       }
       case 'function': {
-        editor.update(initialEditorState, updateOptions);
+        editor.update(initialEditorState, editorUpdateOptions);
         break;
       }
     }

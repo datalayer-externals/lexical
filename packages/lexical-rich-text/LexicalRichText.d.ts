@@ -16,7 +16,13 @@ import type {
 } from 'lexical';
 import {ElementNode} from 'lexical';
 
-export type InitialEditorStateType = null | string | EditorState | (() => void);
+export type InitialEditorStateType =
+  | null
+  | (() => void)
+  | $ReadOnly<{
+      editorState: EditorState;
+      ignoreSelection?: boolean;
+    }>;
 
 export declare class QuoteNode extends ElementNode {
   static getType(): string;

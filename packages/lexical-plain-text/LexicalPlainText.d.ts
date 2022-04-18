@@ -7,7 +7,13 @@
  * @flow strict
  */
 import type {EditorState, LexicalEditor} from 'lexical';
-export type InitialEditorStateType = null | string | EditorState | (() => void);
+export type InitialEditorStateType =
+  | null
+  | (() => void)
+  | $ReadOnly<{
+      editorState: EditorState;
+      ignoreSelection?: boolean;
+    }>;
 
 declare function registerPlainText(
   editor: LexicalEditor,

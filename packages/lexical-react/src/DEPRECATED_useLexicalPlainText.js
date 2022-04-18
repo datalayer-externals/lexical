@@ -16,7 +16,13 @@ import usePlainTextSetup from './shared/usePlainTextSetup';
 export default function useLexicalPlainText(
   editor: LexicalEditor,
   externalHistoryState?: HistoryState,
-  initialEditorState?: null | string | EditorState | (() => void),
+  initialEditorState?:
+    | null
+    | (() => void)
+    | $ReadOnly<{
+        editorState: EditorState,
+        ignoreSelection?: boolean,
+      }>,
 ): void {
   usePlainTextSetup(editor, initialEditorState);
   useLexicalHistory(editor, externalHistoryState);

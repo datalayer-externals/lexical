@@ -9,7 +9,13 @@
 
 import type {EditorState} from 'lexical';
 
-type InitialEditorStateType = null | string | EditorState | (() => void);
+type InitialEditorStateType =
+  | null
+  | (() => void)
+  | $ReadOnly<{
+      editorState: EditorState,
+      ignoreSelection?: boolean,
+    }>;
 
 declare export default function PlainTextPlugin({
   contentEditable: React$Node,
