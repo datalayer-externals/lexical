@@ -16,6 +16,7 @@ export type InitialEditorStateType = null | string | EditorState | (() => void);
 // Convoluted logic to make this work with Flow. Order matters.
 const options = {tag: 'history-merge'};
 const setEditorOptions: {
+  ignoreSelection?: boolean,
   tag?: string,
 } = options;
 const updateOptions: {

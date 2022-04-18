@@ -15,7 +15,7 @@ import invariant from 'shared/invariant';
 
 import {$getRoot, $getSelection, TextNode} from '.';
 import {FULL_RECONCILE, NO_DIRTY_NODES} from './LexicalConstants';
-import {createEmptyEditorState} from './LexicalEditorState';
+import {cloneEditorState, createEmptyEditorState} from './LexicalEditorState';
 import {addRootElementEvents, removeRootElementEvents} from './LexicalEvents';
 import {flushRootMutations, initMutationObserver} from './LexicalMutations';
 import {
@@ -53,6 +53,7 @@ export type EditorUpdateOptions = {|
 |};
 
 export type EditorSetOptions = {|
+  ignoreSelection?: boolean,
   tag?: string,
 |};
 
@@ -568,7 +569,10 @@ export class LexicalEditor {
       }
       commitPendingUpdates(this);
     }
-    this._pendingEditorState = editorState;
+    const newPendingEditorState = cloneEditorState(editorState);
+    newPendingEditorState._readOnly = editorState._readOnly;
+    this._pendingEditorState = newPendingEditorState;
+
     this._dirtyType = FULL_RECONCILE;
     this._compositionKey = null;
     if (tag != null) {
