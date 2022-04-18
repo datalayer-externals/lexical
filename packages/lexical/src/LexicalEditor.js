@@ -569,7 +569,6 @@ export class LexicalEditor {
       commitPendingUpdates(this);
     }
     this._pendingEditorState = editorState;
-
     this._dirtyType = FULL_RECONCILE;
     this._compositionKey = null;
     if (tag != null) {
