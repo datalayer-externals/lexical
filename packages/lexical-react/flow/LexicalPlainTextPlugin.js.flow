@@ -13,7 +13,7 @@ type InitialEditorStateType =
   | null
   | (() => void)
   | $ReadOnly<{
-      editorState: EditorState,
+      editorState: string | EditorState,
       ignoreSelection?: boolean,
     }>;
 

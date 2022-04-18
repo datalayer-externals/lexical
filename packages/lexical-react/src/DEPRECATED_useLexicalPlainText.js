@@ -20,7 +20,7 @@ export default function useLexicalPlainText(
     | null
     | (() => void)
     | $ReadOnly<{
-        editorState: EditorState,
+        editorState: string | EditorState,
         ignoreSelection?: boolean,
       }>,
 ): void {

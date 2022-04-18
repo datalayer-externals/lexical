@@ -20,7 +20,7 @@ export type InitialEditorStateType =
   | null
   | (() => void)
   | $ReadOnly<{
-      editorState: EditorState,
+      editorState: string | EditorState,
       ignoreSelection?: boolean,
     }>;
 
@@ -55,7 +55,7 @@ export function initializeEditor(
     switch (typeof initialEditorState) {
       case 'object': {
         const editorState =
-          typeof initialEditorState === 'string'
+          typeof initialEditorState.editorState === 'string'
             ? editor.parseEditorState(initialEditorState.editorState)
             : initialEditorState.editorState;
         editor.setEditorState(editorState, {
