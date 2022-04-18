@@ -41,6 +41,7 @@ import {
   $isGridSelection,
   $isNodeSelection,
   $isRangeSelection,
+  $setSelection,
   CLICK_COMMAND,
   COMMAND_PRIORITY_EDITOR,
   COPY_COMMAND,
@@ -266,18 +267,16 @@ export function initializeEditor(
   } else if (initialEditorState !== null) {
     switch (typeof initialEditorState) {
       case 'object': {
-        if (typeof initialEditorState === 'string') {
-          const {editorState, ignoreSelection} = initialEditorState;
-          const parsedEditorState = editor.parseEditorState(editorState);
-          editor.setEditorState(parsedEditorState, {
-            ignoreSelection,
-            ...historyMergeTag,
-          });
-        } else {
-          const {editorState, ignoreSelection} = initialEditorState;
-          editor.setEditorState(editorState, {
-            ignoreSelection,
-            ...historyMergeTag,
+        const editorState =
+          typeof initialEditorState === 'string'
+            ? editor.parseEditorState(initialEditorState.editorState)
+            : initialEditorState.editorState;
+        editor.setEditorState(editorState, {
+          ...historyMergeTag,
+        });
+        if (initialEditorState.ignoreSelection) {
+          editor.update(() => {
+            $setSelection(null);
           });
         }
         break;

@@ -166,7 +166,6 @@ type EditorUpdateOptions = {
 };
 type EditorSetOptions = {
   tag?: string;
-  ignoreSelection?: boolean;
 };
 type EditorThemeClassName = string;
 type TextNodeThemeClasses = {
